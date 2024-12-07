@@ -204,12 +204,10 @@ class SearchContainer extends React.Component<{}, ISearchState> {
       this.state.account &&
       this.state.account.accountType === UserType.STAFF
     ) {
+      headers.push({ label: CONSTANTS.AGE_LABEL, key: 'accountId.age' });
+      headers.push({ label: CONSTANTS.PHONE_NUMBER_LABEL, key: 'accountId.age' });
       headers.push({ label: 'Resume', key: 'application.general.URL.resume' });
       headers.push({ label: 'Github', key: 'application.general.URL.github' });
-      headers.push({
-        label: CONSTANTS.DRIBBBLE_LINK_LABEL,
-        key: 'application.general.URL.dribbble',
-      });
       headers.push({
         label: CONSTANTS.PERSONAL_LABEL,
         key: 'application.general.URL.personal',
@@ -222,6 +220,10 @@ class SearchContainer extends React.Component<{}, ISearchState> {
         label: CONSTANTS.OTHER_LINK_LABEL,
         key: 'application.general.URL.other',
       });
+      headers.push({
+        label: 'Number of previous hackathons', 
+        key: 'application.shortAnswer.previousHackathons'
+      })
       headers.push({
         label: CONSTANTS.SKILLS_LABEL,
         key: 'application.shortAnswer.skills',
@@ -242,10 +244,10 @@ class SearchContainer extends React.Component<{}, ISearchState> {
         label: CONSTANTS.SHIRT_SIZE_LABEL,
         key: 'application.accommodation.shirtSize',
       });
-      headers.push({
-        label: CONSTANTS.ATTENDENCE_OPTION_PREFERENCE_LABEL,
-        key: 'application.accommodation.attendancePreference',
-      });
+      // headers.push({
+      //   label: CONSTANTS.ATTENDENCE_OPTION_PREFERENCE_LABEL,
+      //   key: 'application.accommodation.attendancePreference',
+      // });
       headers.push({
         label: CONSTANTS.IMPAIRMENTS_LABEL,
         key: 'application.accommodation.impairments',
@@ -254,10 +256,10 @@ class SearchContainer extends React.Component<{}, ISearchState> {
         label: CONSTANTS.BARRIERS_LABEL,
         key: 'application.accommodation.barriers',
       });
-      headers.push({
-        label: CONSTANTS.TRAVEL_LABEL,
-        key: 'application.accommodation.travel',
-      });
+      // headers.push({
+      //   label: CONSTANTS.TRAVEL_LABEL,
+      //   key: 'application.accommodation.travel',
+      // });
       headers.push({
         label: CONSTANTS.ETHNICITY_LABEL,
         key: 'application.other.ethnicity',
@@ -271,12 +273,14 @@ class SearchContainer extends React.Component<{}, ISearchState> {
         label: CONSTANTS.PRONOUN_LABEL,
         key: 'accountId.pronoun',
       });
+      headers.push({label: CONSTANTS.DIETARY_RESTRICTIONS_LABEL, key: 'accountId.dietaryRestrictions'});
+      headers.push({label: 'Authorize MLH to send emails', key: 'application.other.sendEmail'})
     }
     const tempHeaders: string[] = [];
     headers.forEach((header) => {
       tempHeaders.push(header.label);
     });
-    const csvData: string[] = [tempHeaders.join(',')];
+    const csvData: string[] = [tempHeaders.join('\t')]; // actually in tsv format
     this.filter().forEach((result) => {
       if (result.selected) {
         const row: string[] = [];
@@ -290,10 +294,10 @@ class SearchContainer extends React.Component<{}, ISearchState> {
           }
           row.push(value);
         });
-        csvData.push(row.join(','));
+        csvData.push(row.join('\t'));
       }
     });
-    fileDownload(csvData.join('\n'), 'hackerData.csv', 'text/csv');
+    fileDownload(csvData.join('\n'), 'hackerData.tsv', 'text/tsv');
   }
 
   private async triggerSearch(): Promise<void> {

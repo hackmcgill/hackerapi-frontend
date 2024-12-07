@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import {
   ErrorMessage,
@@ -101,7 +102,6 @@ const ManageAccountForm: React.FC<IManageAccountProps> = (props) => {
         try {
           const response = await Account.getSelf();
           const newAccountDetails = response.data.data;
-
           // Changed birthdate to age
           //newAccountDetails.age = date2input(newAccountDetails.age);
 
@@ -284,17 +284,31 @@ const ManageAccountForm: React.FC<IManageAccountProps> = (props) => {
         </>
       )}
 
-      <FastField
-        component={FormikElements.FormattedNumber}
-        label={CONSTANTS.PHONE_NUMBER_LABEL}
-        placeholder="+# (###) ###-####"
-        format="+# (###) ###-####"
-        name={'phoneNumber'}
-        required={true}
-        value={fp.values.phoneNumber}
-      />
-      <ErrorMessage component={FormikElements.Error} name="phoneNumber" />
+      {props.mode === ManageAccountModes.CREATE && (
+        <>
+          <FastField
+            component={FormikElements.PhoneNumberInput}
+            label={CONSTANTS.PHONE_NUMBER_LABEL}
+            name={"phoneNumber"}
+            required={true}
+            value={fp.values.phoneNumber}
+          />
+          <ErrorMessage component={FormikElements.Error} name="phoneNumber" />
+        </>
+      )}
 
+      {props.mode === ManageAccountModes.EDIT && (
+        <>
+          <FastField
+            component={FormikElements.FormattedNumber}
+            label={CONSTANTS.PHONE_NUMBER_LABEL}
+            name={'phoneNumber'}
+            required={true}
+            value={fp.values.phoneNumber}
+          />
+          <ErrorMessage component={FormikElements.Error} name="phoneNumber" />
+        </>
+      )}
 
       <FastField
         component={FormikElements.Select}
@@ -347,21 +361,26 @@ const ManageAccountForm: React.FC<IManageAccountProps> = (props) => {
   // Render a formik form that allows user to edit account values and then
   // submit (triggering appropriate reaction - account create or edit - based
   // up mode)
+
+  const getInitialValues = () => {
+    return {
+      firstName: accountDetails.firstName,
+      lastName: accountDetails.lastName,
+      email: accountDetails.email,
+      password: accountDetails.password || '',
+      newPassword: '',
+      pronoun: accountDetails.pronoun,
+      gender: accountDetails.gender,
+      dietaryRestrictions: accountDetails.dietaryRestrictions,
+      phoneNumber: accountDetails.phoneNumber, 
+      age: accountDetails.age,
+    };
+  };
+
   return (
     <Formik
       enableReinitialize={true}
-      initialValues={{
-        firstName: accountDetails.firstName,
-        lastName: accountDetails.lastName,
-        email: accountDetails.email,
-        password: accountDetails.password || '',
-        newPassword: '',
-        pronoun: accountDetails.pronoun,
-        gender: accountDetails.gender,
-        dietaryRestrictions: accountDetails.dietaryRestrictions,
-        phoneNumber: accountDetails.phoneNumber,
-        age: accountDetails.age,
-      }}
+      initialValues={getInitialValues()}
       onSubmit={handleSubmit}
       validationSchema={getValidationSchema(
         props.mode === ManageAccountModes.CREATE

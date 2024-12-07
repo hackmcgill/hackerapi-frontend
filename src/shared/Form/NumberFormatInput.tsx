@@ -16,11 +16,11 @@ export const NumberFormatInput: React.FunctionComponent<
   return (
     <Label>
       <LabelText label={props.label} required={props.required} />
-      {props.format ? (
-        <StyledPatternFormat {...props} />
-      ) : (
-        <StyledNumericFormat {...props} />
-      )}
+        {props.format ? (
+          <StyledPatternFormat {...props} />
+        ) : (
+          <StyledNumericFormat {...props} />
+        )}
     </Label>
   );
 };
