@@ -72,6 +72,11 @@ const SingleHackerView: React.FC<IHackerViewProps> = (props) => {
   const account = (hacker.accountId as IAccount) || {};
   const pronoun = account.pronoun ? `(${account.pronoun})` : '';
 
+  // convert birthdates to ages if age value doesn't exist and birthdate value does
+  if (account.birthDate && !account.age) {
+    account.age = date2age(account.birthDate);
+  }
+
   return (
     <article>
       <Helmet>

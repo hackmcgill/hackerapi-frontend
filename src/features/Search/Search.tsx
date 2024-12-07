@@ -372,7 +372,7 @@ class SearchContainer extends React.Component<{}, ISearchState> {
           foundAcct =
             fullName.includes(searchBar) ||
             account.email.toLowerCase().includes(searchBar) ||
-            account.phoneNumber.toString().includes(searchBar) ||
+            (account.phoneNumber?.toString() || 'N/A').includes(searchBar) ||
             account.gender.toLowerCase().includes(searchBar) ||
             (account._id && account._id.includes(searchBar));
         }

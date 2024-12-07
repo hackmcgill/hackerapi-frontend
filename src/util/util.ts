@@ -87,11 +87,20 @@ function input2datetime(date: number): string {
   return formattedDate.toString();
 }
 
-function date2age(date: string) {
+function date2age(date: string): string {
   const dob = new Date(date);
-  const diffMs = Date.now() - dob.getTime();
-  const ageDt = new Date(diffMs);
-  return Math.abs(ageDt.getUTCFullYear() - 1970);
+  const currentDate = new Date();
+  let age = currentDate.getFullYear() - dob.getFullYear();
+
+  // Adjust if the birthday hasn't occurred yet this year
+  if (
+      currentDate.getMonth() < dob.getMonth() ||
+      (currentDate.getMonth() === dob.getMonth() &&
+        currentDate.getDate() < dob.getDate())
+  ) {
+      age--;
+  }
+  return age.toString();
 }
 
 /**
