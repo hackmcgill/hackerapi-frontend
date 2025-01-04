@@ -276,28 +276,55 @@ class SearchContainer extends React.Component<{}, ISearchState> {
       headers.push({label: CONSTANTS.DIETARY_RESTRICTIONS_LABEL, key: 'accountId.dietaryRestrictions'});
       headers.push({label: 'Authorize MLH to send emails', key: 'application.other.sendEmail'})
     }
+
     const tempHeaders: string[] = [];
     headers.forEach((header) => {
       tempHeaders.push(header.label);
     });
-    const csvData: string[] = [tempHeaders.join('\t')]; // actually in tsv format
+    
+    const csvData: string[] = [tempHeaders.join(',')]; 
+
     this.filter().forEach((result) => {
       if (result.selected) {
         const row: string[] = [];
         headers.forEach((header) => {
           let value;
+          let free_response = false;
+
           if (header.key.indexOf('.') >= 0) {
+
+            // Check if the field is a free-form response
+            if (header.key == "application.shortAnswer.question1" || header.key == "application.shortAnswer.question2" || header.key == "application.shortAnswer.comments") {
+              free_response = true
+            }
+            
+            // Get the value of the field by navigating the nested structure of the hacker object,
+            // using the header key to determine the path 
             const nestedAttr = header.key.split('.');
             value = getNestedAttr(result.hacker, nestedAttr);
+
+            // Format free responses to be properly parsed as comma-separated value (CSV)
+            if (free_response == true){
+
+              // If the value contains any quotes, newlines, tabs, or commas, wrap it in double quotes
+              if (/['"/n/t,]/.test(value)) {
+                value = `"${value}"`
+              }
+            }
+            
           } else {
             value = result.hacker[header.key];
           }
           row.push(value);
         });
-        csvData.push(row.join('\t'));
+        csvData.push(row.join(','));
       }
     });
-    fileDownload(csvData.join('\n'), 'hackerData.tsv', 'text/tsv');
+
+    // Make sure that file is encoded as UTF-8 so that all characters are properly displayed
+    const bom = '\uFEFF'; // UTF-8 BOM
+    fileDownload(bom + csvData.join('\n'), 'hackerData.csv', 'text/csv');
+    
   }
 
   private async triggerSearch(): Promise<void> {
