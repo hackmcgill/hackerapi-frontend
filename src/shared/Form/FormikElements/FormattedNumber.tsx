@@ -16,6 +16,7 @@ const NumberFormatFormikComponent: React.FunctionComponent<
   INumberFormatFormikComponent & FieldProps
 > = (props) => {
   const placeholder = props.placeholder ? props.placeholder : '';
+
   return (
     <NumberFormatInput
       onValueChange={handleChange(props)}
@@ -38,5 +39,6 @@ function handleChange({ field, form }: FieldProps) {
     form.setFieldValue(field.name, value.value);
   };
 }
+
 
 export { NumberFormatFormikComponent as FormattedNumber };

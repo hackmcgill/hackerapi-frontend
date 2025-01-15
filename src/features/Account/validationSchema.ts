@@ -22,7 +22,8 @@ const getValidationSchema = (isCreate: boolean) => {
       'validPhone',
       'Must be a valid phone number',
       (value) => {
-        return !value || value.length === 11;
+        const parsedValue = value?.replace(/\D/g, '');
+        return !parsedValue || (parsedValue.length > 10 && parsedValue.length < 14);
       }
     ),
     age: number()
