@@ -1,19 +1,16 @@
 import React from 'react';
 import { Formik, Form, FastField, ErrorMessage } from 'formik';
 import * as FormikElements from '../../shared/Form/FormikElements';
+import { SubmitBtn } from '../../shared/Form';
 
 const HackerCheckinForm: React.FC = () => {
   return (
     <Formik
       initialValues={{
-        placeholderFirstName: '',
-        placeholderLastName: '',
-        placeholderEmail: '',
-        placeholderPassword: '',
-        placeholderPhoneNumber: '',
-        placeholderGender: '',
-        placeholderPronoun: '',
-        placeholderDietaryRestrictions: [],
+        numberTeammates: 0,
+        teamNames: ' ',
+        challengesToSubmit: [],
+        workshopsAttended: ' '
       }}
       onSubmit={(values) => {
         console.log('Submitting with:', values);
@@ -22,86 +19,42 @@ const HackerCheckinForm: React.FC = () => {
       {(fp) => (
         <Form placeholder={fp.values}>
           <FastField
-            name="placeholderFirstName"
-            label="Placeholder First Name"
+            name="numberTeammates"
+            label="Number of team members (including yourself)"
             component={FormikElements.Input}
             required
-            value={fp.values.placeholderFirstName}
+            value={fp.values.numberTeammates}
           />
-          <ErrorMessage component={FormikElements.Error} name="placeholderFirstName" />
+          <ErrorMessage component={FormikElements.Error} name="numberTeammates" />
 
           <FastField
-            name="placeholderLastName"
-            label="Placeholder Last Name"
+            name="What are the names of your team members? Please include first and last names and use the names as written in your hacker application/registration. (ex.: John Doe, Jane Doe)"
+            label="teamNames"
             component={FormikElements.Input}
             required
-            value={fp.values.placeholderLastName}
+            value={fp.values.teamNames}
           />
-          <ErrorMessage component={FormikElements.Error} name="placeholderLastName" />
+          <ErrorMessage component={FormikElements.Error} name="teamNames" />
 
           <FastField
-            name="placeholderEmail"
-            label="Placeholder Email"
+            name="challengesToSubmit"
+            label="What challenges does your team plan to submit to? Note that all projects are entered into 'People's Choice' and 'Top 3 Hacks'. Choose up to 3 options only. "
             component={FormikElements.Input}
             required
-            value={fp.values.placeholderEmail}
+            value={fp.values.challengesToSubmit}
           />
-          <ErrorMessage component={FormikElements.Error} name="placeholderEmail" />
+          <ErrorMessage component={FormikElements.Error} name="challengesToSubmit" />
 
           <FastField
-            name="placeholderPassword"
-            label="Placeholder Password"
-            inputType={'password'}
+            name="workshopsAttended"
+            label="Did you attend a workshop/sponsor event? If so, which one(s)?"
             component={FormikElements.Input}
             required
-            value={fp.values.placeholderPassword}
+            value={fp.values.workshopsAttended}
           />
-          <ErrorMessage component={FormikElements.Error} name="placeholderPassword" />
+          <ErrorMessage component={FormikElements.Error} name="workshopsAttended" />
 
-          <FastField
-            name="placeholderPhoneNumber"
-            label="Placeholder Phone Number"
-            component={FormikElements.PhoneNumberInput}
-            required
-            value={fp.values.placeholderPhoneNumber}
-          />
-          <ErrorMessage component={FormikElements.Error} name="placeholderPhoneNumber" />
-
-          <FastField
-            name="placeholderGender"
-            label="Placeholder Gender"
-            component={FormikElements.Select}
-            options={[]}
-            required
-            value={fp.values.placeholderGender}
-          />
-          <ErrorMessage component={FormikElements.Error} name="placeholderGender" />
-
-          <FastField
-            name="placeholderPronoun"
-            label="Placeholder Pronoun"
-            component={FormikElements.Select}
-            options={[]}
-            required
-            value={fp.values.placeholderPronoun}
-          />
-          <ErrorMessage component={FormikElements.Error} name="placeholderPronoun" />
-
-          <FastField
-            name="placeholderDietaryRestrictions"
-            label="Placeholder Dietary Restrictions"
-            component={FormikElements.Select}
-            isMulti
-            options={[]}
-            required
-            value={fp.values.placeholderDietaryRestrictions}
-          />
-          <ErrorMessage
-            component={FormikElements.Error}
-            name="placeholderDietaryRestrictions"
-          />
-
-          <button type="submit">Submit</button>
+          <SubmitBtn children="Submit"/>
         </Form>
       )}
     </Formik>
