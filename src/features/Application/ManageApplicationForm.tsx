@@ -24,6 +24,7 @@ import {
   Degrees,
   FrontendRoute,
   HackerStatus,
+  HackerReviewerStatus,
   IEthnicity,
   IHacker,
   ISetting,
@@ -86,6 +87,7 @@ const ManageApplicationForm: React.FunctionComponent<
     id: '',
     accountId: '',
     status: HackerStatus.HACKER_STATUS_NONE,
+    reviewerStatus: HackerReviewerStatus.HACKER_REVIEWER_STATUS_NONE,
     application: {
       general: {
         school: '',
@@ -1314,6 +1316,7 @@ const ManageApplicationForm: React.FunctionComponent<
       id: hackerId,
       accountId,
       status: HackerStatus.HACKER_STATUS_NONE,
+      reviewerStatus: HackerReviewerStatus.HACKER_REVIEWER_STATUS_NONE,
       application: values.hacker.application,
     };
 

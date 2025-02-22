@@ -2,6 +2,7 @@ import {
   AttendenceOptions,
   DietaryRestriction,
   HackerStatus,
+  HackerReviewerStatus,
   JobInterest,
   ShirtSize,
 } from '.';
@@ -10,6 +11,7 @@ export interface IStatsResponse {
   stats: {
     total: number;
     status: { [key in HackerStatus]: number };
+    reviewerStatus: { [key in HackerReviewerStatus]: number };
     school: { [key: string]: number };
     degree: { [key: string]: number };
     gender: { [key: string]: number };

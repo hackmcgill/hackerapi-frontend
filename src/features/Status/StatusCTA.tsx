@@ -5,7 +5,7 @@ import computer2 from '../../assets/images/computer2.svg';
 import developer from '../../assets/images/developer.svg';
 import hacker from '../../assets/images/hacker.svg';
 import rocket from '../../assets/images/rocket.svg';
-import { FrontendRoute, HackerStatus, ISetting } from '../../config';
+import { FrontendRoute, HackerStatus, HackerReviewerStatus, ISetting } from '../../config';
 import * as CONSTANTS from '../../config/constants';
 import {
   Button,

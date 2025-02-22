@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Account } from '../../api';
 import Hacker from '../../api/hacker';
-import { HackerStatus, IAccount } from '../../config';
+import { HackerStatus, HackerReviewerStatus, IAccount } from '../../config';
 import WithToasterContainer from '../../shared/HOC/withToaster';
 import { isConfirmed } from '../../util';
 import StatusCTAContainer from '../Status/StatusCTAContainer';
@@ -13,6 +13,10 @@ const HackerDashboard: React.FC = () => {
   // Currently logged in hacker's status (e.g. APPLIED, CONFIRMED, etc.)
   const [status, setStatus] = useState<HackerStatus>(
     HackerStatus.HACKER_STATUS_NONE
+  );
+
+  const [reviewerStatus, setReviewerStatus] = useState<HackerReviewerStatus>(
+    HackerReviewerStatus.HACKER_REVIEWER_STATUS_NONE
   );
 
   // Is the currently logged in hacker confirmed as attending event?
@@ -41,6 +45,14 @@ const HackerDashboard: React.FC = () => {
         }
       }
 
+      // Set hacker reviewer status
+      try {
+        const response = await Hacker.getSelf();
+        setReviewerStatus(response.data.data.reviewerStatus);
+      } catch (e: any) {
+          setReviewerStatus(HackerReviewerStatus.HACKER_REVIEWER_STATUS_NONE);
+      }
+
       // Check if hacker is confirmed
       try {
         setConfirmed(await isConfirmed());
@@ -55,7 +67,7 @@ const HackerDashboard: React.FC = () => {
 
   // this will prevent loading the default confirm email component page if the componentDidMount has not finished it's async methods
   return isLoaded ? (
-    <StatusCTAContainer {...{ account, status, confirmed }} />
+    <StatusCTAContainer {...{ account, status, confirmed }} /> // reviewerStatus
   ) : null;
 };
 

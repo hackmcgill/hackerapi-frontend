@@ -3,6 +3,7 @@ import {
   APIRoute,
   CACHE_HACKER_KEY,
   CACHE_STATS_KEY,
+  HackerReviewerStatus,
   HackerStatus,
   IHacker,
   IResumeResponse,
@@ -22,6 +23,7 @@ class HackerAPI {
     API.createEntity(APIRoute.HACKER_CHECKIN);
     API.createEntity(APIRoute.HACKER);
     API.createEntity(APIRoute.HACKER_STATUS);
+    API.createEntity(APIRoute.HACKER_REVIEWER_STATUS);
   }
   /**
    * Create an account.
@@ -108,6 +110,22 @@ class HackerAPI {
     const value = API.getEndpoint(APIRoute.HACKER_STATUS).patch(
       { id },
       { status }
+    );
+    LocalCache.remove(CACHE_HACKER_KEY);
+    LocalCache.remove(key);
+    return value;
+  }
+
+    /**
+   * Update's a hacker's reviewer status any status to any status of type HackerStatus
+   * @param {String} id The id of the hacker to be updated
+   * @param {HackerReviewerStatus} reviewerStatus The new status of the hacker
+   */
+  public updateReviewerStatus(id: string, reviewerStatus: HackerReviewerStatus): AxiosPromise {
+    const key = CACHE_HACKER_KEY + '-' + id;
+    const value = API.getEndpoint(APIRoute.HACKER_REVIEWER_STATUS).patch(
+      { id },
+      { reviewerStatus }
     );
     LocalCache.remove(CACHE_HACKER_KEY);
     LocalCache.remove(key);

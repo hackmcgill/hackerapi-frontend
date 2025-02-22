@@ -26,6 +26,7 @@ import TeamPage from './pages/Team/index';
 
 import {
   FrontendRoute,
+  HackerReviewerStatus,
   HackerStatus,
   IAccount,
   IHacker,

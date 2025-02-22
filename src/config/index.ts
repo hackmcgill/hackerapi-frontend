@@ -10,6 +10,7 @@ export * from './frontendRoutes';
 export * from './genders';
 export * from './gradYears';
 export * from './hackerStatus';
+export * from './hackerReviewerStatus';
 export * from './inviteInfo';
 export * from './jobInterests';
 export * from './majors';
